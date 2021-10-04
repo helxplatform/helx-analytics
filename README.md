@@ -6,6 +6,9 @@ The project is built using Typescript and compiled to ES6 using Babel/tsc. It ca
 using `npm run build`. This will build the project to [lib](./lib).
 
 It [exports](./src/index.ts) specific analytics tracker implementations of the abstract HeLXAnalyticsTracker.
+
+#### Note: further, comprehensive explanations can be found in the actual definitions.
+
 ### HeLXAnalyticsTracker
 The abstract class which each tracker implements. Made up of three methods:
 - `setup` initializes the tracking platform so that it is ready to be used to track events.
