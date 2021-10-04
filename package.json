@@ -1,0 +1,23 @@
+{
+  "name": "helx-analytics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/babel --extensions .ts src --out-dir lib && npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Griffin Roupe",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-ga": "^3.3.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.5",
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/react": "^17.0.27",
+    "typescript": "^4.4.3"
+  }
+}

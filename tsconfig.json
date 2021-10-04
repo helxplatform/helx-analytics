@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "noImplicitAny": true,
+      "preserveConstEnums": true,
+      "sourceMap": true,
+      "lib": [ "es2016", "dom" ],
+      "outDir": "lib",
+      "rootDir": "src",
+      "declarationMap": true,
+      "declaration": true,
+      "emitDeclarationOnly": true
+    }
+  }
