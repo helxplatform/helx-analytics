@@ -11,6 +11,8 @@ export interface TrackingResponse {
     success: boolean;
 }
 /**
+ * Decorator that awaits _setupPromise before proceeding with analytics method
+ * (for use within an async function).
  *
  * @decorator
  */

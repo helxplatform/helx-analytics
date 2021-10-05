@@ -24,11 +24,13 @@ export interface TrackingResponse {
 }
 
 /**
+ * Decorator that awaits _setupPromise before proceeding with analytics method
+ * (for use within an async function).
  * 
  * @decorator
  */
 export function waitsForSetup(): Function {
-    return function(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) {
+    return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
         const method = descriptor.value;
         descriptor.value = async function(...args: any[]) {
             await this._setupPromise;
