@@ -23,10 +23,24 @@ export interface TrackingResponse {
     success: boolean;
 }
 
+/**
+ * 
+ * @decorator
+ */
+export function waitsForSetup(): Function {
+    return function(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) {
+        const method = descriptor.value;
+        descriptor.value = async function(...args: any[]) {
+            await this._setupPromise;
+            return method.apply(this, args);
+        };
+    }
+}
+
 export abstract class HeLxAnalyticsTracker {
-    protected setupPromise: Promise<void>
+    public _setupPromise: Promise<void> = null;
     constructor(setupData: Object) {
-        this.setupPromise = this.setup(setupData);
+        this._setupPromise = this.setup(setupData);
     }
     /**
      * The setup method should initialize whatever tracking platform is being used
@@ -46,15 +60,30 @@ export abstract class HeLxAnalyticsTracker {
      * This method should choose/transform the data specifically relevant
      * to the implementation's tracking platform and relay it accordingly.
      * 
-     * Note: implementation should await setupPromise (if setup is asynchronous).
+     * Note: implementation should call @waitsForSetup
      * 
      * @async
      */
     public abstract trackEvent(event: TrackingEvent): Promise<TrackingResponse>;
 
     /**
+     * Tracks the specific route (page) which following events will be taking place.
+     * Some implementations, such as Google Analytics, require route tracking in order
+     * to work properly.
+     * 
+     * @param {string} route - Should be the relative path for the URL (e.g. "/search/foobar").
+     * 
+     * Note: implementation should call @waitsForSetup
+     * 
+     * @async
+     */
+    public abstract trackRoute(route: string): Promise<TrackingResponse>;
+
+    /**
      * Perform final tracking (e.g. how long a tracker/page was used) and perform 
      * any teardown required to cease analytics collection.
+     * 
+     * Note: implementation should call @waitsForSetup
      * 
      * @async
      */

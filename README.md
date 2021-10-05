@@ -15,6 +15,7 @@ The abstract class which each tracker implements. Made up of three methods:
 - `trackEvent` tracks a specific event (e.g. visiting a page, clicking a button) and sends it to
   the tracking platform. This method takes the broad `TrackingEvent`, which the specific implementation then
   translates for its associated tracking platform.
+- `trackRoute` tracks the specific route (page) which subsequent events will occur on.
 - `teardown` should destroy the tracker.
 
 ### Trackers

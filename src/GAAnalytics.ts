@@ -1,4 +1,4 @@
-import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse } from "./Analytics";
+import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse, waitsForSetup } from "./Analytics";
 import * as ReactGA from 'react-ga';
 
 export interface GASetupData {
@@ -7,13 +7,15 @@ export interface GASetupData {
 };
 
 export default class GAAnalytiics extends HeLxAnalyticsTracker {
+    constructor(setupData: GASetupData) {
+        super(setupData);
+    }
     async setup(setupData: GASetupData): Promise<void> {
         const { trackingId, options } = setupData;
         ReactGA.initialize(trackingId, options);
     }
+    @waitsForSetup()
     async trackEvent(event: TrackingEvent): Promise<TrackingResponse> {
-        // ReactGA initializes synchronously, but just put this here as a reference.
-        await this.setupPromise;
         // Google Analytics currently uses the keys exactly as-is in TrackingEvent.
         // (because TrackingEvent is based off GA, this will change with more trackers). 
         const { ...gaEvent } = event;
@@ -25,6 +27,14 @@ export default class GAAnalytiics extends HeLxAnalyticsTracker {
             success: true
         };
     }
+    @waitsForSetup()
+    async trackRoute(route: string): Promise<TrackingResponse> {
+        ReactGA.pageview(route);
+        return {
+            success: true
+        };
+    }
     // ReactGA offers no way to destroy a tracker.
+    @waitsForSetup()
     async teardown(): Promise<void> {}
 }

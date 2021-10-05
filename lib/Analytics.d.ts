@@ -10,8 +10,13 @@ export interface TrackingEvent {
 export interface TrackingResponse {
     success: boolean;
 }
+/**
+ *
+ * @decorator
+ */
+export declare function waitsForSetup(): Function;
 export declare abstract class HeLxAnalyticsTracker {
-    protected setupPromise: Promise<void>;
+    _setupPromise: Promise<void>;
     constructor(setupData: Object);
     /**
      * The setup method should initialize whatever tracking platform is being used
@@ -30,14 +35,28 @@ export declare abstract class HeLxAnalyticsTracker {
      * This method should choose/transform the data specifically relevant
      * to the implementation's tracking platform and relay it accordingly.
      *
-     * Note: implementation should await setupPromise (if setup is asynchronous).
+     * Note: implementation should call @waitsForSetup
      *
      * @async
      */
     abstract trackEvent(event: TrackingEvent): Promise<TrackingResponse>;
     /**
+     * Tracks the specific route (page) which following events will be taking place.
+     * Some implementations, such as Google Analytics, require route tracking in order
+     * to work properly.
+     *
+     * @param {string} route - Should be the relative path for the URL (e.g. "/search/foobar").
+     *
+     * Note: implementation should call @waitsForSetup
+     *
+     * @async
+     */
+    abstract trackRoute(route: string): Promise<TrackingResponse>;
+    /**
      * Perform final tracking (e.g. how long a tracker/page was used) and perform
      * any teardown required to cease analytics collection.
+     *
+     * Note: implementation should call @waitsForSetup
      *
      * @async
      */
