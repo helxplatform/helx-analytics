@@ -1,6 +1,6 @@
 {
   "name": "helx-analytics",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Proof of concept for HeLx analytics collection.",
   "main": "lib/index.js",
   "scripts": {
