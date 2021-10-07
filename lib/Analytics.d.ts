@@ -1,9 +1,13 @@
 declare type Transport = 'beacon' | 'xhr' | 'image';
+interface CustomParameters {
+    [key: string]: any;
+}
 export interface TrackingEvent {
     category: string;
     action: string;
     label?: string;
     value?: number;
+    customParameters?: CustomParameters;
     nonInteraction?: boolean;
     transport?: Transport;
 }
@@ -49,6 +53,8 @@ export declare abstract class HeLxAnalyticsTracker {
      *
      * @param {string} route - Should be the relative path for the URL (e.g. "/search/foobar").
      *
+     * TODO: in the future, could add a parameter "oldRoute" that tracks which page the user left.
+     * TODO: in the future, the custom parameter "Duration" could be added to track how long a user spent on a page.
      * Note: implementation should call @waitsForSetup
      *
      * @async

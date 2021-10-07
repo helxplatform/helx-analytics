@@ -1,5 +1,10 @@
 type Transport = 'beacon' | 'xhr' | 'image';
 
+interface CustomParameters {
+    // Any string is valid as a key, anything is valid as a value.
+    [key: string]: any
+}
+
 export interface TrackingEvent {
     // Basically a higher-level event 'type', referring to the
     // category of the event on the page (e.g. "Navigation").
@@ -11,7 +16,8 @@ export interface TrackingEvent {
     // (e.g. if action is "Clicked button", label could be "Knowledge graph details").
     label?: string,
     // An optional, numerical value corresponding to the event being tracked.
-    value?: number
+    value?: number,
+    customParameters?: CustomParameters;
     // An optional boolean representing if an event is programatic,
     // i.e., not triggered by user interaction, for example page load, usage time, etc.
     nonInteraction?: boolean,
@@ -75,6 +81,8 @@ export abstract class HeLxAnalyticsTracker {
      * 
      * @param {string} route - Should be the relative path for the URL (e.g. "/search/foobar").
      * 
+     * TODO: in the future, could add a parameter "oldRoute" that tracks which page the user left.
+     * TODO: in the future, the custom parameter "Duration" could be added to track how long a user spent on a page.
      * Note: implementation should call @waitsForSetup
      * 
      * @async

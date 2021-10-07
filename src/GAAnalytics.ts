@@ -17,8 +17,8 @@ export default class GAAnalytiics extends HeLxAnalyticsTracker {
     @waitsForSetup()
     async trackEvent(event: TrackingEvent): Promise<TrackingResponse> {
         // Google Analytics currently uses the keys exactly as-is in TrackingEvent.
-        // (because TrackingEvent is based off GA, this will change with more trackers). 
-        const { ...gaEvent } = event;
+        // (because TrackingEvent is based off GA, this will change with more trackers).
+        const { customParameters, ...gaEvent } = event;
         // ReactGA does not expose the GA response through its methods, so just assume
         // it went through. It's not really consequential whether it's successful or not
         // anyways.
