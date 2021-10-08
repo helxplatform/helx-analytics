@@ -1,4 +1,4 @@
-import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse, waitsForSetup } from "./Analytics";
+import { HeLxAnalyticsTracker, RouteEvent, trackingEvent, TrackingEvent, TrackingResponse, waitsForSetup } from "./Analytics";
 import * as ReactGA from 'react-ga';
 
 export interface GASetupData {
@@ -14,7 +14,7 @@ export default class GAAnalytiics extends HeLxAnalyticsTracker {
         const { trackingId, options } = setupData;
         ReactGA.initialize(trackingId, options);
     }
-    @waitsForSetup()
+    @trackingEvent()
     async trackEvent(event: TrackingEvent): Promise<TrackingResponse> {
         // Google Analytics currently uses the keys exactly as-is in TrackingEvent.
         // (because TrackingEvent is based off GA, this will change with more trackers).
@@ -27,8 +27,9 @@ export default class GAAnalytiics extends HeLxAnalyticsTracker {
             success: true
         };
     }
-    @waitsForSetup()
-    async trackRoute(route: string): Promise<TrackingResponse> {
+    @trackingEvent()
+    async trackRoute(event: RouteEvent): Promise<TrackingResponse> {
+        const { route } = event;
         ReactGA.pageview(route);
         return {
             success: true

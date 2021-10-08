@@ -1,4 +1,4 @@
-import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse, waitsForSetup } from "./Analytics";
+import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse, waitsForSetup, trackingEvent, RouteEvent } from "./Analytics";
 import mixpanel, { RequestOptions } from 'mixpanel-browser';
 
 export interface MixPanelSetupData {
@@ -19,10 +19,10 @@ export default class MixPanelAnalytics extends HeLxAnalyticsTracker {
     /**
      * Mixpanel tracks events in the following structure: event name, event properties, options, callback
      */
-    @waitsForSetup()
+    @trackingEvent()
     trackEvent(event: TrackingEvent) {
         // Destructure the event into only the parameters that can be used in Mixpanel. Others aren't supported.
-        const { category, action, label, value, customParameters={}, nonInteraction=false, transport } =  event;
+        const { category, action, label, value, customParameters={}, nonInteraction=false, transport } = event;
         /* Store metadata parameters describing the event as custom parameters. */
         customParameters["_nonInteraction"] = nonInteraction;
         customParameters["_category"] = category;
@@ -60,16 +60,19 @@ export default class MixPanelAnalytics extends HeLxAnalyticsTracker {
      * Mixpanel does not offer native support for route tracking, so it will be tracked via custom events.
      * 
      */
-    @waitsForSetup()
-    trackRoute(route: string) {
-        const customParameters = {
+    @trackingEvent()
+    trackRoute(event: RouteEvent) {
+        const { route, customParameters={}, transport } = event;
+        const parameters = {
             "Route": route,
+            ...customParameters
         };
         return this.trackEvent({
             category: "Routing",
             action: "Opened page",
-            customParameters,
-            
+            customParameters: parameters,
+            nonInteraction: false,
+            transport
         });
     }
     /**

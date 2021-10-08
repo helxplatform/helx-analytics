@@ -1,4 +1,4 @@
-import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse } from "./Analytics";
+import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse, RouteEvent } from "./Analytics";
 export interface MixPanelSetupData {
     projectToken: string;
     debug?: boolean;
@@ -14,7 +14,7 @@ export default class MixPanelAnalytics extends HeLxAnalyticsTracker {
      * Mixpanel does not offer native support for route tracking, so it will be tracked via custom events.
      *
      */
-    trackRoute(route: string): Promise<TrackingResponse>;
+    trackRoute(event: RouteEvent): Promise<TrackingResponse>;
     /**
      * Mixpanel does not offer support for uninitializing the tracker.
      *

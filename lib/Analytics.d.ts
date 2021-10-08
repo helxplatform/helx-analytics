@@ -2,14 +2,20 @@ declare type Transport = 'beacon' | 'xhr' | 'image';
 interface CustomParameters {
     [key: string]: any;
 }
-export interface TrackingEvent {
+interface Event {
+    customParameters?: CustomParameters;
+    transport?: Transport;
+}
+export interface TrackingEvent extends Event {
     category: string;
     action: string;
     label?: string;
     value?: number;
-    customParameters?: CustomParameters;
     nonInteraction?: boolean;
-    transport?: Transport;
+}
+export interface RouteEvent extends Event {
+    route: string;
+    customParameters?: CustomParameters;
 }
 export interface TrackingResponse {
     success: boolean;
@@ -21,9 +27,22 @@ export interface TrackingResponse {
  * @decorator
  */
 export declare function waitsForSetup(): Function;
+/**
+ * Decorator that adds instance-defined `globalCustomParameters` to each events' custom parameters.
+ *
+ *
+ * @waitsForSetup
+ */
+export declare function trackingEvent(): Function;
 export declare abstract class HeLxAnalyticsTracker {
     _setupPromise: Promise<void>;
-    constructor(setupData: Object);
+    globalCustomParameters: CustomParameters;
+    /**
+     *
+     * @param setupData - Data required in order to initialize a tracker
+     * @param globalCustomParameters - These will be added to every event created by tracking methods. Specific customParameters on the event will override these instance-wide ones.
+     */
+    constructor(setupData: Object, globalCustomParameters?: CustomParameters);
     /**
      * The setup method should initialize whatever tracking platform is being used
      * by the implementation so that it is ready to be used in trackEvent.
@@ -41,7 +60,7 @@ export declare abstract class HeLxAnalyticsTracker {
      * This method should choose/transform the data specifically relevant
      * to the implementation's tracking platform and relay it accordingly.
      *
-     * Note: implementation should call @waitsForSetup
+     * Note: implementation should call @trackingEvent
      *
      * @async
      */
@@ -55,11 +74,11 @@ export declare abstract class HeLxAnalyticsTracker {
      *
      * TODO: in the future, could add a parameter "oldRoute" that tracks which page the user left.
      * TODO: in the future, the custom parameter "Duration" could be added to track how long a user spent on a page.
-     * Note: implementation should call @waitsForSetup
+     * Note: implementation should call @trackingEvent
      *
      * @async
      */
-    abstract trackRoute(route: string): Promise<TrackingResponse>;
+    abstract trackRoute(event: RouteEvent): Promise<TrackingResponse>;
     /**
      * Perform final tracking (e.g. how long a tracker/page was used) and perform
      * any teardown required to cease analytics collection.
