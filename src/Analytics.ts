@@ -51,6 +51,7 @@ export function waitsForSetup(): Function {
             await this._setupPromise;
             return method.apply(this, args);
         };
+        return descriptor;
     }
 }
 
@@ -78,6 +79,7 @@ export function trackingEvent(): Function {
             descriptor
         )
         Object.defineProperty(target, propertyKey, decoratedDescriptor);
+        return descriptor;
     }
 }
 
