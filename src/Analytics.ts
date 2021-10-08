@@ -73,11 +73,11 @@ export function trackingEvent(): Function {
         };
         // Apply the `waitsForSetup` decorator to `trackingEvent` decorated methods.
         const decoratedDescriptor = waitsForSetup()(
-            target.prototype,
+            target,
             propertyKey,
             descriptor
         )
-        Object.defineProperty(target.prototype, propertyKey, decoratedDescriptor);
+        Object.defineProperty(target, propertyKey, decoratedDescriptor);
     }
 }
 
