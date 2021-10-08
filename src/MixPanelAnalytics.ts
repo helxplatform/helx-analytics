@@ -1,4 +1,4 @@
-import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse, waitsForSetup, trackingEvent, RouteEvent } from "./Analytics";
+import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse, waitsForSetup, trackingEvent, RouteEvent, CustomParameters } from "./Analytics";
 import mixpanel, { RequestOptions } from 'mixpanel-browser';
 
 export interface MixPanelSetupData {
@@ -7,8 +7,8 @@ export interface MixPanelSetupData {
 };
 
 export default class MixPanelAnalytics extends HeLxAnalyticsTracker {
-    constructor(setupData: MixPanelSetupData) {
-        super(setupData);
+    constructor(setupData: MixPanelSetupData, globalCustomParameters: CustomParameters={}) {
+        super(setupData, globalCustomParameters);
     }
     // If unspecified, debug will be set to false
     async setup({ projectToken, debug=false }: MixPanelSetupData) {

@@ -1,5 +1,5 @@
 declare type Transport = 'beacon' | 'xhr' | 'image';
-interface CustomParameters {
+export interface CustomParameters {
     [key: string]: any;
 }
 interface Event {

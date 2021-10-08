@@ -1,10 +1,10 @@
-import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse, RouteEvent } from "./Analytics";
+import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse, RouteEvent, CustomParameters } from "./Analytics";
 export interface MixPanelSetupData {
     projectToken: string;
     debug?: boolean;
 }
 export default class MixPanelAnalytics extends HeLxAnalyticsTracker {
-    constructor(setupData: MixPanelSetupData);
+    constructor(setupData: MixPanelSetupData, globalCustomParameters?: CustomParameters);
     setup({ projectToken, debug }: MixPanelSetupData): Promise<void>;
     /**
      * Mixpanel tracks events in the following structure: event name, event properties, options, callback

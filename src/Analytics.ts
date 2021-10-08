@@ -1,6 +1,6 @@
 type Transport = 'beacon' | 'xhr' | 'image';
 
-interface CustomParameters {
+export interface CustomParameters {
     // Any string is valid as a key, anything is valid as a value.
     [key: string]: any
 }

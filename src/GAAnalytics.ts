@@ -1,4 +1,4 @@
-import { HeLxAnalyticsTracker, RouteEvent, trackingEvent, TrackingEvent, TrackingResponse, waitsForSetup } from "./Analytics";
+import { CustomParameters, HeLxAnalyticsTracker, RouteEvent, trackingEvent, TrackingEvent, TrackingResponse, waitsForSetup } from "./Analytics";
 import * as ReactGA from 'react-ga';
 
 export interface GASetupData {
@@ -7,8 +7,8 @@ export interface GASetupData {
 };
 
 export default class GAAnalytiics extends HeLxAnalyticsTracker {
-    constructor(setupData: GASetupData) {
-        super(setupData);
+    constructor(setupData: GASetupData, globalCustomParameters: CustomParameters={}) {
+        super(setupData, globalCustomParameters);
     }
     async setup(setupData: GASetupData): Promise<void> {
         const { trackingId, options } = setupData;
