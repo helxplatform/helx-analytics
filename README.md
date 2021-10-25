@@ -19,9 +19,12 @@ The abstract class which each tracker implements. Made up of three methods:
 - `teardown` should destroy the tracker.
 
 ### Trackers
-There is currently only one analytics tracker implementation.
-
 #### GAAnalytics (Google Analytics via ReactGA)
 - setup takes a GA tracking id and other associated options (see type definitions).
 - trackEvent relays an event to Google Analytics
 - teardown is a no-op, since ReactGA offers no method for destroying a tracker.
+
+#### MixPanelAnalytics (Mixpanel using the mixpanel-browser client)
+- setup takes a Mixpanel project token. Can also optionally enable debugging.
+- trackEvent relays an event to Mixpanel
+- teardown is a no-op, since mixpanel-client doesn't allow deinitializing.
