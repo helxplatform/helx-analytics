@@ -21,10 +21,17 @@ The abstract class which each tracker implements. Made up of three methods:
 ### Trackers
 #### GAAnalytics (Google Analytics via ReactGA)
 - setup takes a GA tracking id and other associated options (see type definitions).
-- trackEvent relays an event to Google Analytics
+- trackEvent relays an event to Google Analytics.
+- trackRoute conveys a special Google Analytic route event to the platform.
 - teardown is a no-op, since ReactGA offers no method for destroying a tracker.
 
 #### MixPanelAnalytics (Mixpanel using the mixpanel-browser client)
 - setup takes a Mixpanel project token. Can also optionally enable debugging.
 - trackEvent relays an event to Mixpanel
+- trackRoute relays a custom-made tracking event to Mixpanel using trackEvent which conveys routing information.
 - teardown is a no-op, since mixpanel-client doesn't allow deinitializing.
+
+### Usage
+1. A tracker (`GAAnalytics`, `MixPanelAnalytics`) should be imported and constructed using the appropriate setup data.
+2. Its tracking methods (`trackEvent`, `trackRoute`) should be called accordingly to track usage statistics.
+3. Teardown should be performed using `teardown` upon termination of analytics collection.
