@@ -2,7 +2,13 @@ import { CustomParameters, HeLxAnalyticsTracker, RouteEvent, trackingEvent, Trac
 import * as ReactGA from 'react-ga';
 
 export interface GASetupData {
+    /**
+     * Refers to a UA property ID for the project.
+     */
     trackingId: string,
+    /**
+     * See `ReactGA.InitializeOptions`.
+     */
     options?: ReactGA.InitializeOptions
 };
 

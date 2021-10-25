@@ -35,7 +35,15 @@ export declare function waitsForSetup(): Function;
  */
 export declare function trackingEvent(): Function;
 export declare abstract class HeLxAnalyticsTracker {
-    _setupPromise: Promise<void>;
+    /**
+     * Used internally by trackers to buffer event tracking until the tracker has completed setup.
+     */
+    protected _setupPromise: Promise<void>;
+    /**
+     * These custom parameters will be sent to the analytics platform on every event.
+     * Specific customParameters attached to an event will override these.
+     *
+     */
     globalCustomParameters: CustomParameters;
     /**
      *

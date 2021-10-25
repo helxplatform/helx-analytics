@@ -2,7 +2,14 @@ import { HeLxAnalyticsTracker, TrackingEvent, TrackingResponse, waitsForSetup, t
 import mixpanel, { RequestOptions } from 'mixpanel-browser';
 
 export interface MixPanelSetupData {
+    /**
+     * Refers to the Mixpanel project token.
+     * See {@link https://help.mixpanel.com/hc/en-us/articles/115004502806-Find-Project-Token-|here} for instructions on how to find a project's token.
+     */
     projectToken: string,
+    /**
+     * A setting used by `mixpanel-browser` to enable debugging.
+     */
     debug?: boolean
 };
 
