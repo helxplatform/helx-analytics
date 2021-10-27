@@ -25,6 +25,7 @@ Each tracking implementation extends the abstract class `HeLxAnalyticsTracker`, 
 - `teardown` should destroy the tracker.
 
 ### Example
+Setting up a tracker:
 ```
 // Data required to setup the associated analytics service and point towards the specific project.
 const setupData = { projectToken: "xxx" };
@@ -32,6 +33,7 @@ const setupData = { projectToken: "xxx" };
 const globalCustomParameters = { "helx-analytics version": analyticsVersion };
 const analytics = new MixPanelAnalytics(setupData, globalCustomParameters)`;
 ```
+Tracking events using the tracker instance: 
 ```
 // Relay to the analytics platform that a modal has been opened on the page.
 analytics.trackEvent({
@@ -40,6 +42,7 @@ analytics.trackEvent({
     customParameters: { "User ID" : userId }
 });
 ```
+Tracking events/routes:
 ```
 // While using the settings popup the user presses a button that navigates to the full settings page
 analytics.trackEvent({
@@ -53,6 +56,10 @@ analytics.trackRoute({
     route: "/settings/",
     customParameters: { "User ID" : userId }
 });
+```
+Destruction/teardown:
+```
+analytics.teardown();
 ```
 
 ### API Documentation
