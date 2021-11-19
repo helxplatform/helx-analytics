@@ -1,4 +1,11 @@
 declare type Transport = 'beacon' | 'xhr' | 'image';
+/**
+ * Custom parameters will be handled differently by different platforms. For example, while Mixpanel has native support for custom parameters,
+ * Google Analytics does not.
+ *
+ * Note that it is recommended that custom parameter values stick to primitives, promises, and Functions. The values of functions will be automatically
+ * resolved to its actual value before the event is posted to a tracker. Async functions *are* supported, and their values will be properly resolved.
+ */
 export interface CustomParameters {
     [key: string]: any;
 }
@@ -28,7 +35,8 @@ export interface TrackingResponse {
  */
 export declare function waitsForSetup(): Function;
 /**
- * Decorator that adds instance-defined `globalCustomParameters` to each events' custom parameters.
+ * Decorator that adds instance-defined `globalCustomParameters` to each event's custom parameters.
+ * The values of custom parameters with Function values are also resolved in this decorator.
  *
  *
  * @waitsForSetup

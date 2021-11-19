@@ -1,7 +1,16 @@
 type Transport = 'beacon' | 'xhr' | 'image';
 
+/**
+ * Custom parameters will be handled differently by different platforms. For example, while Mixpanel has native support for custom parameters,
+ * Google Analytics does not.
+ * 
+ * Note that it is recommended that custom parameter values stick to primitives, promises, and Functions. The values of functions will be automatically
+ * resolved to its actual value before the event is posted to a tracker. Async functions *are* supported, and their values will be properly resolved. 
+ */
 export interface CustomParameters {
     // Any string is valid as a key, anything is valid as a value.
+    // Gererally, only primitive types should be used as values. Functions will automatically be executed with no arguments
+    // to resolve their value.
     [key: string]: any
 }
 
@@ -56,7 +65,8 @@ export function waitsForSetup(): Function {
 }
 
 /**
- * Decorator that adds instance-defined `globalCustomParameters` to each events' custom parameters.
+ * Decorator that adds instance-defined `globalCustomParameters` to each event's custom parameters.
+ * The values of custom parameters with Function values are also resolved in this decorator. 
  * 
  * 
  * @waitsForSetup
@@ -70,6 +80,14 @@ export function trackingEvent(): Function {
                 ...this.globalCustomParameters,
                 ...params
             };
+            for (let i=0; i<Object.keys(event.customParameters).length; i++) {
+                const key = Object.keys(event.customParameters)[i];
+                // If the value of a custom parameter is a Function, call the function to resolve its actual value.
+                if (event.customParameters[key] instanceof Function) event.customParameters[key] = event.customParameters[key]();
+                // If the value of a custom parameter is a Promise, await the promise to resolve its actual value.
+                // Note: `await` automatically wraps non-Promise inputs into Promises, so there is no need for a type check.
+                event.customParameters[key] = await event.customParameters[key];
+            }
             return method.apply(this, [event]);
         };
         // Apply the `waitsForSetup` decorator to `trackingEvent` decorated methods.
