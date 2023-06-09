@@ -1,6 +1,6 @@
 {
   "name": "helx-analytics",
-  "version": "1.0.14",
+  "version": "2.0.0",
   "description": "Proof of concept for HeLx analytics collection.",
   "main": "lib/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/frostyfan109/helx-analytics-poc.git"
+    "url": "https://github.com/helxplatform/helx-analytics.git"
   },
   "author": "Griffin Roupe",
   "license": "ISC",
@@ -20,8 +20,7 @@
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@types/mixpanel-browser": "^2.35.7",
     "mixpanel-browser": "^2.41.0",
-    "react": "^17.0.2",
-    "react-ga": "^3.3.0"
+    "react-ga4": "^2.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.7",

@@ -1,15 +1,19 @@
 import { CustomParameters, HeLxAnalyticsTracker, RouteEvent, trackingEvent, TrackingEvent, TrackingResponse, waitsForSetup } from "./Analytics";
-import * as ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
+import type { GaOptions } from 'react-ga4/types/ga4'
 
 export interface GASetupData {
     /**
-     * Refers to a UA property ID for the project.
+     * Refers to a GA4 property ID for the project.
      */
     trackingId: string,
-    /**
-     * See `ReactGA.InitializeOptions`.
-     */
-    options?: ReactGA.InitializeOptions
+    options?: {
+        nonce?: string;
+        testMode?: boolean;
+        gtagUrl?: string;
+        gaOptions?: GaOptions | any;
+        gtagOptions?: any;
+    }
 };
 
 export default class GAAnalytiics extends HeLxAnalyticsTracker {
@@ -24,11 +28,14 @@ export default class GAAnalytiics extends HeLxAnalyticsTracker {
     async trackEvent(event: TrackingEvent): Promise<TrackingResponse> {
         // Google Analytics currently uses the keys exactly as-is in TrackingEvent.
         // (because TrackingEvent is based off GA, this will change with more trackers).
-        const { customParameters, ...gaEvent } = event;
+        const { customParameters, action, ...gaEvent } = event;
         // ReactGA does not expose the GA response through its methods, so just assume
         // it went through. It's not really consequential whether it's successful or not
         // anyways.
-        ReactGA.event(gaEvent);
+        ReactGA.gtag("event", action, {
+            ...gaEvent,
+            ...customParameters
+        });
         return {
             success: true
         };
@@ -36,7 +43,7 @@ export default class GAAnalytiics extends HeLxAnalyticsTracker {
     @trackingEvent()
     async trackRoute(event: RouteEvent): Promise<TrackingResponse> {
         const { route } = event;
-        ReactGA.pageview(route);
+        ReactGA.send({ hitType: "pageview", page: route });
         return {
             success: true
         };
