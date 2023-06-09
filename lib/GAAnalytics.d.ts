@@ -1,14 +1,17 @@
 import { CustomParameters, HeLxAnalyticsTracker, RouteEvent, TrackingEvent, TrackingResponse } from "./Analytics";
-import * as ReactGA from 'react-ga';
+import type { GaOptions } from 'react-ga4/types/ga4';
 export interface GASetupData {
     /**
-     * Refers to a UA property ID for the project.
+     * Refers to a GA4 property ID for the project.
      */
     trackingId: string;
-    /**
-     * See `ReactGA.InitializeOptions`.
-     */
-    options?: ReactGA.InitializeOptions;
+    options?: {
+        nonce?: string;
+        testMode?: boolean;
+        gtagUrl?: string;
+        gaOptions?: GaOptions | any;
+        gtagOptions?: any;
+    };
 }
 export default class GAAnalytiics extends HeLxAnalyticsTracker {
     constructor(setupData: GASetupData, globalCustomParameters?: CustomParameters);
